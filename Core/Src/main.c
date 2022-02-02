@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "debug.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +97,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    DEBUG_INFO(&huart2, (uint8_t)"TESTERR");
+    HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
   }
