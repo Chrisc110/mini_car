@@ -1,5 +1,7 @@
 #include "ultrasonic_sensor_driver.h"
 
+extern TIM_TypeDef htim2;
+
 typedef struct ultrasonic_config_s
 {
     GPIO_TypeDef * trig_gpio;
@@ -12,6 +14,6 @@ typedef struct ultrasonic_config_s
 static const ultrasonic_config_s ULTRASONIC_CONFIG[NUM_ULTRASONIC_CHANNELS] = 
 {
 
-    {}
+    {GPIOA, GPIO_PIN_1, &htim2, TIM_CHANNEL_1, TIM2_FREQ_MHz}
 
-}
+};

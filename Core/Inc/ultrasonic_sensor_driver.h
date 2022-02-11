@@ -5,6 +5,7 @@
 #include "main.h"
 
 #define NUM_ULTRASONIC_CHANNELS 1
+#define TIM2_FREQ_MHz 84
 
 
 #endif
