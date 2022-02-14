@@ -2,6 +2,7 @@
 #define ULTRASONIC_SENSOR_DRIVER_H
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "main.h"
 
 #define NUM_ULTRASONIC_CHANNELS 1
