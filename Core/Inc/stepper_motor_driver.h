@@ -8,6 +8,9 @@
 #define FULL_STEP 1
 #define WAVE_STEP 2
 
+#define DIR_CW 0
+#define DIR_CCW 1
+
 #define UNITS 2
 
 
