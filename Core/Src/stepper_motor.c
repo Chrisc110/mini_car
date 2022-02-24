@@ -27,7 +27,7 @@ void run_stepper_motor_task()
         break;
 
         case STEP_MOTOR_CHANGE_DIRECTION_STATE:
-        // make only the left motor go, so we start to turn, continue to do this until the ultrasonic sensor says it is clear
+        // make left motor go forwards and right motor go backwards , so we start to turn, continue to do this until the ultrasonic sensor says it is clear
         stepper_motor_state = STEP_MOTOR_RUN_STATE;
         break;
 
