@@ -101,7 +101,6 @@ static void stepper_step_once(uint8_t inst){
         HAL_GPIO_WritePin(STEPPER_CONFIG[inst].gpio[3], STEPPER_CONFIG[inst].pin[3], UNIPOLAR_HS_PATTERN[STEPPER_INFO[inst].step_index][3]);
     }
 
-
     //updating the step_index based on direction
 
     if (STEPPER_INFO[inst].dir == DIR_CW){
@@ -121,6 +120,34 @@ static void stepper_step_once(uint8_t inst){
 
         STEPPER_INFO[inst].step_index--;
     }
-
-
 }
+
+void stepper_step_nonblocking(uint8_t inst, uint32_t steps, uint8_t dir){
+    STEPPER_INFO[inst].steps = steps;
+    STEPPER_INFO[inst].dir = dir;
+}
+
+void stepper_stop(uint8_t inst){
+    STEPPER_INFO[inst].steps = 0;
+}
+
+//TODO: CALL THIS FUNCTION IN HAL TIM OVERFLOW CALLBACK FUNCTION
+void stepper_TIM_OVF_ISR(TIM_HandleTypeDef* htim){
+
+    if (htim->Instance == STEPPER_TIMER){
+        
+        for (int i = 0; i < UNITS; i++){
+            if ((STEPPER_INFO[i].ticks >= STEPPER_INFO[i].max_ticks) && (STEPPER_INFO[i].steps > 0)){
+                stepper_step_once(i);
+                STEPPER_INFO[i].steps--;
+                STEPPER_INFO[i].ticks = 0;
+            }
+            
+            else{
+                STEPPER_INFO[i].ticks++;
+            }
+        }
+        
+    }
+
+} 
