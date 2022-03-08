@@ -146,8 +146,6 @@ void stepper_TIM_OVF_ISR(TIM_HandleTypeDef* htim){
             else{
                 STEPPER_INFO[i].ticks++;
             }
-        }
-        
+        }      
     }
-
 } 

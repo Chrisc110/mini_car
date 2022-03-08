@@ -11,7 +11,12 @@
 #define DIR_CW 0
 #define DIR_CCW 1
 
+#define STEPPER_TIMER TIM1
+
 #define UNITS 2
+
+#define STEPPER_0 0
+#define STEPPER_1 1
 
 
 typedef struct stepper_info_s{

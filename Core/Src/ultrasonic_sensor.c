@@ -8,6 +8,8 @@ typedef enum
 
 ultrasonic_sensor_state_e ultrasonic_sensor_state = ULTRASONIC_IDLE_STATE;
 
+uint8_t isBlocked = NOT_BLOCKED;
+
 void run_ultrasonic_task()
 {
     switch (ultrasonic_sensor_state)
@@ -18,6 +20,11 @@ void run_ultrasonic_task()
         //send a couple of pulses and average out the distance to make a decision
         break;
     }
+}
+
+void get_isBlocked()
+{
+    return isBlocked;
 }
 
 /**********************************************************************************/

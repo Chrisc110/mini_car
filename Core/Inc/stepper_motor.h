@@ -4,6 +4,15 @@
 #include <stdint.h>
 #include "main.h"
 
+#define TURN_RIGHT 0
+#define TURN_LEFT 1
+
+#define DEG_TO_STEP_CONV 23
+
+#define SLOW_RPM 5
+#define NORMAL_RPM 8
+#define FAST_RPM 11
+
 /**
   * @brief Runs the stepper motor state machine that controls the state of the stepper motor
   * @param None
