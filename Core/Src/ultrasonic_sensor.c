@@ -1,4 +1,5 @@
 #include "ultrasonic_sensor.h"
+#include "ultrasonic_sensor_driver.h"
 
 typedef enum
 {
@@ -29,3 +30,24 @@ void get_isBlocked()
 
 /**********************************************************************************/
 
+void update_blocked(double distance)
+{
+    if (distance < 20)
+    {
+        isBlocked = NOT_BLOCKED;
+    }
+    else
+    {
+        isBlocked = BLOCKED;
+    }
+}
+
+void ultrasonic_send_pulse_state()
+{
+    const uint8_t inst = 0; 
+    double distance = ultrasonic_get_distance(inst);
+    
+    update_blocked (distance);
+
+    ultrasonic_sensor_state = ULTRASONIC_SEND_PULSE_STATE;
+}
