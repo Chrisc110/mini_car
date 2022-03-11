@@ -29,4 +29,6 @@ void ultrasonic_trigger(uint8_t ultrasonic_channel);
   */
 void delay_us (uint16_t time);
 
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim);
+
 #endif

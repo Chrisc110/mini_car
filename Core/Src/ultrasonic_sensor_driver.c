@@ -1,6 +1,6 @@
 #include "ultrasonic_sensor_driver.h"
 
-#define TIME_DISTANCE_CONVERSION_CM 0.0003315
+#define TIME_DISTANCE_CONVERSION_CM 0.03315
 
 #define CHANNEL0 0
 
@@ -33,7 +33,7 @@ static ultrasonic_config_s ultrasonic_config[NUM_ULTRASONIC_CHANNELS] =
 
 double ultrasonic_get_distance(uint8_t ultrasonic_channel)
 {
-    uint16_t distance = 0;
+    double distance = 0;
 
     /*
         Call the trig function
@@ -47,7 +47,14 @@ double ultrasonic_get_distance(uint8_t ultrasonic_channel)
 
    while (!ultrasonic_config[ultrasonic_channel].calculation_complete);
 
-   return ultrasonic_config[ultrasonic_channel].distance;
+   ultrasonic_config[ultrasonic_channel].calculation_complete = false;
+
+   //if (ultrasonic_config[ultrasonic_channel].distance > 10)
+        //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+
+    distance = ultrasonic_config[ultrasonic_channel].distance;
+
+   return distance;
 }
 
 void ultrasonic_trigger(uint8_t ultrasonic_channel)
@@ -61,7 +68,7 @@ void ultrasonic_trigger(uint8_t ultrasonic_channel)
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)
+    if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
     {
         if (!ultrasonic_config[CHANNEL0].is_time0_captured)
         {
@@ -97,5 +104,5 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 void delay_us (uint16_t time)
 {
 	__HAL_TIM_SET_COUNTER(&htim2, 0);
-	while (__HAL_TIM_GET_COUNTER (&htim2) < time);
+	while (__HAL_TIM_GET_COUNTER(&htim2) < time);
 }
