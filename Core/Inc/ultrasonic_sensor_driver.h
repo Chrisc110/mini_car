@@ -13,7 +13,7 @@
   * @param ultrasonic_channel The ultrasonic sensor to use
   * @retval The distance
   */
-double ultrasonic_get_distance(uint8_t ultrasonic_channel);
+uint16_t ultrasonic_get_distance(uint8_t ultrasonic_channel);
 
 /**
   * @brief Send a ultrasonic pulse

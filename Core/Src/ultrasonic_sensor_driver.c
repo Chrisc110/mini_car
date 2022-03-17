@@ -20,7 +20,7 @@ typedef struct ultrasonic_config_s
     uint16_t       timer_channel;
     uint32_t       timer_freq_MHz;
     bool           calculation_complete;
-    double         distance;
+    uint16_t       distance;
     uint32_t       time0;
     uint32_t       time1;
     bool           is_time0_captured;
@@ -31,9 +31,9 @@ static ultrasonic_config_s ultrasonic_config[NUM_ULTRASONIC_CHANNELS] =
     {GPIOA, GPIO_PIN_1, &htim2, TIM_CHANNEL_1, TIM2_FREQ_MHz, false, 0,0,0,0}
 };
 
-double ultrasonic_get_distance(uint8_t ultrasonic_channel)
+uint16_t ultrasonic_get_distance(uint8_t ultrasonic_channel)
 {
-    double distance = 0;
+    uint16_t distance = 0;
 
     /*
         Call the trig function
@@ -49,10 +49,10 @@ double ultrasonic_get_distance(uint8_t ultrasonic_channel)
 
    ultrasonic_config[ultrasonic_channel].calculation_complete = false;
 
-   //if (ultrasonic_config[ultrasonic_channel].distance > 10)
-        //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
-
     distance = ultrasonic_config[ultrasonic_channel].distance;
+
+    //if (distance > 10)
+            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
 
    return distance;
 }
