@@ -3,12 +3,16 @@
 stepper_config_s STEPPER_CONFIG[UNITS] = 
 {
     {
-
-
+        {GPIOA, GPIOB, GPIOB, GPIOB},
+        {SM0_pin0_Pin, SM0_pin1_Pin, SM0_pin2_Pin, SM0_pin3_Pin},
+        2038,
+        FULL_STEP
     },
     {
-
-        
+        {GPIOA, GPIOC, GPIOB, GPIOA},
+        {SM1_pin0_Pin, SM1_pin1_Pin, SM1_pin2_Pin, SM1pin3_Pin},
+        2038,
+        FULL_STEP
     }
 };
 
