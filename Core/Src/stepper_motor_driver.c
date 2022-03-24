@@ -2,17 +2,17 @@
 
 stepper_config_s STEPPER_CONFIG[UNITS] = 
 {
-    
+    {
 
 
+    },
+    {
+
+        
+    }
 };
 
-stepper_info_s STEPPER_INFO[UNITS] = 
-{
-
-
-
-};
+stepper_info_s STEPPER_INFO[UNITS] = {0};
 
 static uint8_t UNIPOLAR_WD_PATTERN[4][4] = {
 		{1, 0, 0, 0},

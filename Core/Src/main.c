@@ -345,7 +345,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, TRIG_Pin|LD2_Pin|GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, TRIG_Pin|LD2_Pin|SM1_pin3_Pin|SM0_pin0_Pin
+                          |SM1_pin0_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, SM0_pin1_Pin|SM0_pin2_Pin|SM0_pin3_Pin|SM1_pin2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(SM1_pin1_GPIO_Port, SM1_pin1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -353,19 +360,33 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TRIG_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = TRIG_Pin|LD2_Pin;
+  /*Configure GPIO pins : TRIG_Pin LD2_Pin SM1_pin3_Pin SM1_pin0_Pin */
+  GPIO_InitStruct.Pin = TRIG_Pin|LD2_Pin|SM1_pin3_Pin|SM1_pin0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  /*Configure GPIO pins : SM0_pin1_Pin SM0_pin2_Pin SM0_pin3_Pin SM1_pin2_Pin */
+  GPIO_InitStruct.Pin = SM0_pin1_Pin|SM0_pin2_Pin|SM0_pin3_Pin|SM1_pin2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SM1_pin1_Pin */
+  GPIO_InitStruct.Pin = SM1_pin1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SM1_pin1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SM0_pin0_Pin */
+  GPIO_InitStruct.Pin = SM0_pin0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(SM0_pin0_GPIO_Port, &GPIO_InitStruct);
 
 }
 
@@ -383,16 +404,17 @@ static void MX_GPIO_Init(void)
 void start_stepper_task(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-  if (ultrasonic_get_distance(0) > 10)
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
   /* Infinite loop */
   for(;;)
   {
 
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
 
-    //if (ultrasonic_get_distance(0) > 10)
-      //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+    if (ultrasonic_get_distance(0) > 10)
+      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+
+    else
+      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 
 
     osDelay(1);
