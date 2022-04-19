@@ -11,7 +11,7 @@
 
 #define SLOW_RPM 5
 #define NORMAL_RPM 8
-#define FAST_RPM 11
+#define FAST_RPM 10
 
 /**
   * @brief Runs the stepper motor state machine that controls the state of the stepper motor
@@ -19,5 +19,9 @@
   * @retval None
   */
 void run_stepper_motor_task();
+
+void start_step_motor_task(void);
+
+void stop_step_motor_task(void);
 
 #endif

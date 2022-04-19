@@ -2,6 +2,7 @@
 #define STEPPER_MOTOR_DRIVER_H
 
 #include <stdint.h>
+#include <math.h>
 #include "main.h"
 
 #define HALF_STEP 0
@@ -11,7 +12,8 @@
 #define DIR_CW 0
 #define DIR_CCW 1
 
-#define STEPPER_TIMER TIM1
+#define STEPPER_TIMER TIM3
+#define MAX_TICKS_PER_MIN 60000.0 //This value is based TIM3... ((Frequency/Prescaler) / Period) * 60
 
 #define UNITS 2
 
@@ -36,7 +38,14 @@ typedef struct stepper_config_s{
     uint8_t stepping_mode;
 }stepper_config_s;
 
+void stepper_init(void);
 
+void stepper_set_speed(uint8_t inst, uint16_t rpm);
 
+static void stepper_step_once(uint8_t inst);
+
+void stepper_step_nonblocking(uint8_t inst, uint32_t steps, uint8_t dir);
+
+void stepper_stop(uint8_t inst);
 
 #endif

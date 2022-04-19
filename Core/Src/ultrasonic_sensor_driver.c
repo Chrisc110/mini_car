@@ -51,9 +51,6 @@ uint16_t ultrasonic_get_distance(uint8_t ultrasonic_channel)
 
     distance = ultrasonic_config[ultrasonic_channel].distance;
 
-    //if (distance > 10)
-            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
-
    return distance;
 }
 

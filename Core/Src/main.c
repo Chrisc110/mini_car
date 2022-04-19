@@ -103,6 +103,8 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
+  stepper_motor_init_all();
+  
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -270,9 +272,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 84-1;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 65535;
+  htim3.Init.Period = 1000-1;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -291,7 +293,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM3_Init 2 */
-
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM3_Init 2 */
 
 }
@@ -346,7 +348,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, TRIG_Pin|LD2_Pin|SM1_pin3_Pin|SM0_pin0_Pin
-                          |SM1_pin0_Pin, GPIO_PIN_RESET);
+                          |SM1_pin0_Pin|GPIO_PIN_10, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SM0_pin1_Pin|SM0_pin2_Pin|SM0_pin3_Pin|SM1_pin2_Pin, GPIO_PIN_RESET);
@@ -360,8 +362,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TRIG_Pin LD2_Pin SM1_pin3_Pin SM1_pin0_Pin */
-  GPIO_InitStruct.Pin = TRIG_Pin|LD2_Pin|SM1_pin3_Pin|SM1_pin0_Pin;
+  /*Configure GPIO pins : TRIG_Pin LD2_Pin SM1_pin3_Pin SM1_pin0_Pin
+                           PA10 */
+  GPIO_InitStruct.Pin = TRIG_Pin|LD2_Pin|SM1_pin3_Pin|SM1_pin0_Pin
+                          |GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -404,19 +408,11 @@ static void MX_GPIO_Init(void)
 void start_stepper_task(void const * argument)
 {
   /* USER CODE BEGIN 5 */
+  
   /* Infinite loop */
   for(;;)
   {
-
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
-
-    if (ultrasonic_get_distance(0) > 10)
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
-
-    else
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-
-
+    run_stepper_motor_task();
     osDelay(1);
   }
   /* USER CODE END 5 */
@@ -435,7 +431,8 @@ void start_ultrasonic_task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-
+    run_application_task();
+    run_ultrasonic_task();
     osDelay(1);
   }
   /* USER CODE END start_ultrasonic_task */
@@ -449,18 +446,18 @@ void start_ultrasonic_task(void const * argument)
   * @param  htim : TIM handle
   * @retval None
   */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
+// void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+//{
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM1) {
-    HAL_IncTick();
-  }
+//  if (htim->Instance == TIM1) {
+//    HAL_IncTick();
+//  }
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
-}
+//}
 
 /**
   * @brief  This function is executed in case of error occurrence.

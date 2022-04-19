@@ -14,4 +14,8 @@
   */
 void run_ultrasonic_task();
 
+void start_ultrasonic_sensor_task(void);
+
+void stop_ultrasonic_sensor_task(void);
+
 #endif

@@ -45,6 +45,25 @@ void run_stepper_motor_task()
 
 /********************************************************************/
 
+void start_step_motor_task(void)
+{
+    stepper_motor_state = STEP_MOTOR_RUN_STATE;
+}
+
+void stop_step_motor_task(void)
+{
+    stepper_motor_state = STEP_MOTOR_IDLE_STATE;
+}
+
+void stepper_motor_init_all(void)
+{
+    stepper_init();
+    for (uint8_t inst = 0; inst < UNITS; inst += 2)
+    {
+        stepper_set_speed(inst, FAST_RPM);
+    }
+}
+
 void step_all(uint32_t steps, uint8_t dir)
 {
     for (uint8_t inst = 0; inst < UNITS; inst += 2)

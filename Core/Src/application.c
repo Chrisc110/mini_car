@@ -17,7 +17,7 @@ void run_application_task()
         
         case APP_START_STATE:
         // Put all other state machines in their first state
-        application_state = APP_IDLE_STATE; 
+        app_start_state();
         break;
 
         case APP_STOP_STATE:
@@ -27,4 +27,20 @@ void run_application_task()
         break;
 
     }
+}
+
+/********************************************************************/
+
+void app_start_state(void)
+{
+    start_step_motor_task();
+    start_ultrasonic_sensor_task();
+    application_state = APP_IDLE_STATE;
+}
+
+void app_stop_state(void)
+{
+    stop_step_motor_task();
+    stop_ultrasonic_task();
+    application_state = APP_IDLE_STATE;
 }

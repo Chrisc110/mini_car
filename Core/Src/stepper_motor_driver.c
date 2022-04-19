@@ -1,5 +1,6 @@
 #include "stepper_motor_driver.h"
 
+
 stepper_config_s STEPPER_CONFIG[UNITS] = 
 {
     {
@@ -10,7 +11,7 @@ stepper_config_s STEPPER_CONFIG[UNITS] =
     },
     {
         {GPIOA, GPIOC, GPIOB, GPIOA},
-        {SM1_pin0_Pin, SM1_pin1_Pin, SM1_pin2_Pin, SM1pin3_Pin},
+        {SM1_pin0_Pin, SM1_pin1_Pin, SM1_pin2_Pin, SM1_pin3_Pin},
         2038,
         FULL_STEP
     }
@@ -78,7 +79,7 @@ void stepper_set_speed(uint8_t inst, uint16_t rpm){
         total_steps = STEPPER_CONFIG[inst].steps_per_rev;
     }
 
-    STEPPER_INFO[inst].max_ticks = 1; //TODO, FIGURE OUT THIS CALCULATION WITH THE TIMER CONFIG CHOSEN
+    STEPPER_INFO[inst].max_ticks = round(MAX_TICKS_PER_MIN / (total_steps * rpm));
 }
 
 //since this function is only being used within the driver, declare it as static
@@ -108,7 +109,7 @@ static void stepper_step_once(uint8_t inst){
     //updating the step_index based on direction
 
     if (STEPPER_INFO[inst].dir == DIR_CW){
-        
+
         if (STEPPER_INFO[inst].step_index == STEPPER_INFO[inst].max_index){
             STEPPER_INFO[inst].step_index = 0;
         }
@@ -116,7 +117,7 @@ static void stepper_step_once(uint8_t inst){
         STEPPER_INFO[inst].step_index++;
     } 
 
-    if(STEPPER_INFO[inst].dir = DIR_CCW){
+    if(STEPPER_INFO[inst].dir == DIR_CCW){
         
         if(STEPPER_INFO[inst].step_index == 0){
             STEPPER_INFO[inst].step_index = STEPPER_INFO[inst].max_index;
@@ -153,3 +154,8 @@ void stepper_TIM_OVF_ISR(TIM_HandleTypeDef* htim){
         }      
     }
 } 
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+    stepper_TIM_OVF_ISR(htim);
+}
